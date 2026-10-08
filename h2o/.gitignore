@@ -1,0 +1,12 @@
+# H2O data is never committed: H2O's terms of use forbid transferring the dataset to third parties.
+# Only the script, its requirements, the sha256 manifest and the READMEs are tracked; everything the script writes
+# (frames, videos, .npz, meta.json, index.csv, the .cache download folder) stays local.
+*
+!.gitignore
+!README.md
+!requirements.txt
+!reproduce_h2o.py
+!MANIFEST.sha256
+!*/
+!*/README.md
+.cache/

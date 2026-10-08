@@ -4,7 +4,8 @@ Retargeting human hand motion from egocentric (first-person) video to robot hand
 
 Planned contents:
 
-- Sample egocentric clips with 3D hand skeletons (21 joints per hand) from H2O and Ego-Exo4D, in one shared input format.
+- Egocentric clips with 3D hand skeletons (21 joints per hand) in one shared input format: EgoVerse runs included as
+  data, H2O runs rebuilt locally by a script (see below).
 - Tools to visualise a skeleton as a floating 3D hand next to its video.
 - Retargeting from the human skeleton to the robot hands in `urgantry_sim`.
 
@@ -15,6 +16,15 @@ Planned contents:
   [`stitching`](data/egoverse_trace/stitching/README.md) and [`sewing`](data/egoverse_trace/sewing/README.md). Each is a
   continuous 20 s take with original frames, per-frame 21-joint skeletons, fingertips, wrists, camera poses and a MANO
   fit in `.npz`, plus the step annotations in its README.
+
+## H2O
+
+[`h2o/`](h2o/README.md): five clips from the [H2O dataset](https://h2odataset.ethz.ch/) in the same format, one folder
+per run named by its main H2O action (`apply_lotion`, `read_espresso`, `pour_milk`, `apply_spray`,
+`take_out_cappuccino`). **The H2O data is not included**: H2O's terms forbid passing it on. Register for H2O yourself,
+then `uv run h2o/reproduce_h2o.py --netrc <file> --mano <dir>` downloads and builds the runs into `h2o/` and checks them
+against `h2o/MANIFEST.sha256`. [`h2o/README.md`](h2o/README.md) has the full setup; each run's README lists its task
+label and H2O action segments.
 
 ## Setup
 
@@ -41,4 +51,5 @@ git submodule update --remote urgantry_sim
 
 Data under [`data/`](data/) is licensed under
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/); each data folder has its own `LICENSE` and an
-attribution section in its README. The `urgantry_sim` submodule is a separate repository with its own licence.
+attribution section in its README. Data built by `h2o/reproduce_h2o.py` stays under H2O's terms of use and must not be
+committed or shared (`h2o/.gitignore` keeps it out of git). The `urgantry_sim` submodule is a separate repository with its own licence.

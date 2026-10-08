@@ -1,0 +1,21 @@
+# Exact environment for h2o/reproduce_h2o.py (Linux x86_64, CPython 3.11.16).
+# Every package the script imports, including the transitive ones, is pinned here, so install it WITHOUT dependency
+# resolution (--no-deps): pyrender 0.1.45 declares an older PyOpenGL pin (3.1.0) that is overridden on purpose, and
+# with resolution pip would refuse the set.
+#   python3.11 -m venv .venv && .venv/bin/pip install --no-deps -r h2o/requirements.txt
+#   (or: uv venv --python 3.11.16 .venv && uv pip install --python .venv --no-deps -r h2o/requirements.txt)
+# The same pins are in the script's PEP 723 header, which `uv run h2o/reproduce_h2o.py` uses. They match the versions
+# in the repository's top-level requirements.txt (used for loading the EgoVerse data) where both list a package.
+freetype-py==2.5.1
+imageio==2.37.0
+imageio-ffmpeg==0.6.0
+networkx==3.6.1
+numpy==2.2.6
+opencv-python-headless==4.12.0.88
+pillow==11.3.0
+pyglet==2.1.16
+pyopengl==3.1.10
+pyrender==0.1.45
+scipy==1.15.3
+six==1.17.0
+trimesh==4.8.3
