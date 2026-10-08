@@ -1,0 +1,94 @@
+{
+ "clip": "trace_054020542686",
+ "lab": "trace",
+ "rig": "own head camera (not Aria)",
+ "task": "stitching",
+ "task_description": "align and sew blue fabric with sewing machine",
+ "episode_hash": "2026-06-01-05-40-20-542686",
+ "source_path": "s3://rldb/processed_v3/trace/2026-06-01-05-40-20-542686.zarr",
+ "source_window": "datasets/egoverse/windows/trace_054020542686",
+ "source_frames": "datasets/egoverse/windows/trace_054020542686/frames",
+ "window": [
+  69,
+  669
+ ],
+ "episode_frames": 739,
+ "fps": 30.0,
+ "frames": 600,
+ "duration_s": 20.0,
+ "image_size": [
+  1280,
+  720
+ ],
+ "units": {
+  "position": "m",
+  "velocity": "m/s",
+  "pixels": "px",
+  "time": "s"
+ },
+ "conventions": {
+  "hands": "axis 1 of every (T, 2, ...) array: 0 = left, 1 = right",
+  "joints": "21: 0 wrist; thumb 1-4, index 5-8, middle 9-12, ring 13-16, pinky 17-20, base to tip",
+  "fingertips": "joints 4, 8, 12, 16, 20 (thumb, index, middle, ring, pinky)",
+  "world": "the episode's own world frame as shipped by EgoVerse; +z appears to point up in these clips (head 0.41-0.55 m above the wrists along +z), undocumented by EgoVerse",
+  "camera": "OpenCV: x right, y down, z forward; cam = R^T (world - t) with head_pose_world = [R t; 0 1]",
+  "head_pose_world": "camera-to-world 4x4",
+  "quaternion": "wrist_quat_world is [qw, qx, qy, qz], wrist-to-world rotation from the shipped wrist pose",
+  "in_view": "hand labelled, wrist more than 5 cm in front of the camera and its pixel inside the image",
+  "skeleton_px": "NaN where the joint is at or behind the camera (z <= 5 cm)",
+  "missing": "NaN, never zeros"
+ },
+ "label_source": "EgoVerse's shipped labels: estimates from the lab's own hand tracker, not motion capture",
+ "annotations": [
+  {
+   "text": "fold blue fabric piece on sewing table with both hands AND align blue fabric piece on sewing table with both hands",
+   "start_idx": 30,
+   "end_idx": 90
+  },
+  {
+   "text": "position blue fabric piece under sewing machine needle with both hands AND align thread with right hand AND lower sewing machine presser foot with right hand",
+   "start_idx": 90,
+   "end_idx": 175
+  },
+  {
+   "text": "thread sewing machine with right hand AND lower sewing machine presser foot with right hand",
+   "start_idx": 175,
+   "end_idx": 210
+  },
+  {
+   "text": "slide blue fabric piece with left hand AND shift blue fabric piece on blue fabric piece with right hand",
+   "start_idx": 210,
+   "end_idx": 244
+  },
+  {
+   "text": "position blue fabric pieces with both hands",
+   "start_idx": 244,
+   "end_idx": 302
+  },
+  {
+   "text": "align blue fabric pieces under sewing machine needle with both hands",
+   "start_idx": 302,
+   "end_idx": 360
+  },
+  {
+   "text": "align blue fabric pieces on sewing table with both hands AND sew blue fabric pieces with sewing machine with both hands",
+   "start_idx": 360,
+   "end_idx": 466
+  },
+  {
+   "text": "sew blue fabric pieces with sewing machine with both hands",
+   "start_idx": 466,
+   "end_idx": 555
+  },
+  {
+   "text": "sew blue fabric pieces with sewing machine with both hands",
+   "start_idx": 555,
+   "end_idx": 633
+  },
+  {
+   "text": "sew blue fabric pieces with sewing machine with both hands",
+   "start_idx": 633,
+   "end_idx": 739
+  }
+ ]
+}

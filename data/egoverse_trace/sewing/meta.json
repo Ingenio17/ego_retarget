@@ -1,0 +1,64 @@
+{
+ "clip": "trace_090854842528",
+ "lab": "trace",
+ "rig": "trace",
+ "task": "sewing",
+ "task_description": "sew fabric",
+ "episode_hash": "2026-07-02-09-08-54-842528",
+ "source_path": "s3://rldb/processed_v3/trace/2026-07-02-09-08-54-842528.zarr",
+ "source_window": "datasets/egoverse/windows/trace_090854842528",
+ "source_frames": "datasets/egoverse/windows/trace_090854842528/frames",
+ "window": [
+  221,
+  821
+ ],
+ "episode_frames": 1043,
+ "fps": 30.0,
+ "frames": 600,
+ "duration_s": 20.0,
+ "image_size": [
+  1280,
+  720
+ ],
+ "units": {
+  "position": "m",
+  "velocity": "m/s",
+  "pixels": "px",
+  "time": "s"
+ },
+ "conventions": {
+  "hands": "axis 1 of every (T, 2, ...) array: 0 = left, 1 = right",
+  "joints": "21: 0 wrist; thumb 1-4, index 5-8, middle 9-12, ring 13-16, pinky 17-20, base to tip",
+  "fingertips": "joints 4, 8, 12, 16, 20 (thumb, index, middle, ring, pinky)",
+  "world": "the episode's own world frame as shipped by EgoVerse; +z appears to point up in these clips (head 0.41-0.55 m above the wrists along +z), undocumented by EgoVerse",
+  "camera": "OpenCV: x right, y down, z forward; cam = R^T (world - t) with head_pose_world = [R t; 0 1]",
+  "head_pose_world": "camera-to-world 4x4",
+  "quaternion": "wrist_quat_world is [qw, qx, qy, qz], wrist-to-world rotation from the shipped wrist pose",
+  "in_view": "hand labelled, wrist more than 5 cm in front of the camera and its pixel inside the image",
+  "skeleton_px": "NaN where the joint is at or behind the camera (z <= 5 cm)",
+  "missing": "NaN, never zeros"
+ },
+ "label_source": "EgoVerse's shipped labels: estimates from the lab's own hand tracker, not motion capture",
+ "annotations": [
+  {
+   "text": "reposition teal fabric on sewing table with both hands",
+   "start_idx": 172,
+   "end_idx": 307
+  },
+  {
+   "text": "flip and reorient teal fabric on sewing table with both hands",
+   "start_idx": 307,
+   "end_idx": 457
+  },
+  {
+   "text": "align teal fabric on sewing table with both hands",
+   "start_idx": 457,
+   "end_idx": 652
+  },
+  {
+   "text": "smooth and align teal fabric on sewing table with both hands",
+   "start_idx": 652,
+   "end_idx": 952
+  }
+ ]
+}

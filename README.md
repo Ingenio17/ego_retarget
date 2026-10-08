@@ -10,8 +10,11 @@ Planned contents:
 
 ## Data
 
-- [`data/egoverse_trace/`](data/egoverse_trace/README.md): one 20 s EgoVerse clip (appliance repair) with original
-  frames, per-frame 21-joint skeletons, fingertips, wrists, camera poses and a MANO fit, in `.npz`.
+- [`data/egoverse_trace/`](data/egoverse_trace/README.md): EgoVerse clips from the `trace` lab, one folder per run, named
+  by task label: [`appliance_repair`](data/egoverse_trace/appliance_repair/README.md),
+  [`stitching`](data/egoverse_trace/stitching/README.md) and [`sewing`](data/egoverse_trace/sewing/README.md). Each is a
+  continuous 20 s take with original frames, per-frame 21-joint skeletons, fingertips, wrists, camera poses and a MANO
+  fit in `.npz`, plus the step annotations in its README.
 
 ## Setup
 
