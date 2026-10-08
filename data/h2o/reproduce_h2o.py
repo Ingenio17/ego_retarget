@@ -18,11 +18,11 @@
 # [tool.uv]
 # override-dependencies = ["pyopengl==3.1.10"]
 # ///
-"""Rebuild the H2O hand-skeleton runs of the ego_retarget repo (h2o/<run>/) from H2O with your own login.
+"""Rebuild the H2O hand-skeleton runs of the ego_retarget repo (data/h2o/<run>/) from H2O with your own login.
 
 The repository holds no H2O data (H2O's terms forbid passing it on). This script streams subject 1's egocentric
 archive from the H2O server (https://h2odataset.ethz.ch/), extracts only the chosen sequences (by default h1/3 o1/7
-o1/1 o2/5 k1/0) and writes, next to each run's committed README.md, h2o/<run>/:
+o1/1 o2/5 k1/0) and writes, next to each run's committed README.md, data/h2o/<run>/:
 
   frames/0000.png ...            H2O's original cam4 RGB frames, byte for byte
   data.npz                       per-frame 21-joint skeletons, fingertips, wrists, velocities, camera poses
@@ -31,12 +31,12 @@ o1/1 o2/5 k1/0) and writes, next to each run's committed README.md, h2o/<run>/:
   video.mp4, overlay.mp4         the frames, and the frames with the skeletons drawn, H.264 CRF 18
   <run>_world3d_only.mp4         floating 3D view of the world-frame hands (pyrender)  (needs --mano)
   README.md                      (rewritten byte-identical to the committed one)
-plus h2o/index.csv. <run> is the task name: H2O's longest action segment in the sequence that is not a plain
+plus data/h2o/index.csv. <run> is the task name: H2O's longest action segment in the sequence that is not a plain
 "place ..." or "grab ...", with spaces as underscores (e.g. apply_lotion); "_s1_<scene>_<seq>" is appended when two
 requested sequences would get the same name. It then checks every file against MANIFEST.sha256 (sha256 only; the
 manifest holds no H2O content). Files whose bytes differ are checked by content against your own download.
 
-Needs (see h2o/README.md for the full setup):
+Needs (see data/h2o/README.md for the full setup):
   - An H2O login. Accept the terms of use at https://h2odataset.ethz.ch/ ; ETH emails a user name and password that
     are valid for 7 days. Put them in a netrc file (line: machine h2odataset.ethz.ch login <user> password <pw>,
     mode 600) passed with --netrc, or in the environment as H2O_USER / H2O_PASSWORD. They are never printed.
@@ -49,9 +49,9 @@ Needs (see h2o/README.md for the full setup):
     requests; one connection gives about 0.12 MB/s).
 
 Run from the repository root either way (Linux x86_64):
-  uv run h2o/reproduce_h2o.py --netrc ~/.h2o_netrc --mano /path/to/mano_v1_2/models
-  python3.11 -m venv .venv && .venv/bin/pip install --no-deps -r h2o/requirements.txt && \
-    .venv/bin/python h2o/reproduce_h2o.py --netrc ~/.h2o_netrc --mano /path/to/mano_v1_2/models
+  uv run data/h2o/reproduce_h2o.py --netrc ~/.h2o_netrc --mano /path/to/mano_v1_2/models
+  python3.11 -m venv .venv && .venv/bin/pip install --no-deps -r data/h2o/requirements.txt && \
+    .venv/bin/python data/h2o/reproduce_h2o.py --netrc ~/.h2o_netrc --mano /path/to/mano_v1_2/models
 """
 import os
 
@@ -108,7 +108,7 @@ BIG = (1280, 960)  # size of the 3D view
 CHECK = {"frames": "exact", "data.npz": "tolerance", "mano_fit.npz": "tolerance", "meta.json": "tolerance",
          "video.mp4": "tolerance", "overlay.mp4": "tolerance", "world3d_only.mp4": "tolerance",
          "README.md": "tolerance", "index.csv": "tolerance"}
-HERE = Path(__file__).resolve().parent  # h2o/ in the repository: the default output folder
+HERE = Path(__file__).resolve().parent  # data/h2o/ in the repository: the default output folder
 
 
 def log(*a):
@@ -569,7 +569,7 @@ def build(args):
     if mf:
         mf = {k: mf[k] for k in ["left_betas", "left_global_orient", "left_transl", "left_hand_pose", "left_err",
                                  "right_betas", "right_global_orient", "right_transl", "right_hand_pose", "right_err",
-                                 "left_joints21_world", "right_joints21_world"]}  # key order as egoverse_trace
+                                 "left_joints21_world", "right_joints21_world"]}  # key order as egoverse/trace
         np.savez_compressed(clip / "mano_fit.npz", **mf)
     t_npz = time.time() - t0
 
@@ -643,7 +643,7 @@ openly licensed and are not part of the ego_retarget repository. Key terms, quot
 - the dataset "shall only be downloaded if you agree to these terms";
 - it "is to be used only for the academic purposes" and "will not be used for commercial purposes";
 - it "will not be transferred to any third party": do not commit, push or send the generated files to anyone who has
-  not accepted H2O's terms themselves (`h2o/.gitignore` keeps them out of git);
+  not accepted H2O's terms themselves (`data/h2o/.gitignore` keeps them out of git);
 - "any publication based on, or containing, the DATASET shall include a reference to the Data set";
 - you "shall further not carry out any procedures with the DATASET (linking, comparison, processing) with which any
   identity of a person could be derived";
@@ -656,7 +656,7 @@ First Person Interaction Recognition.* ICCV 2021. Project page: http://www.taein
 
 
 def write_clip_readme(clip):
-    """Per-run README, same layout as data/egoverse_trace/<task>/README.md. It states only clip facts (sequence, object,
+    """Per-run README, same layout as data/egoverse/trace/<task>/README.md. It states only clip facts (sequence, object,
     frame count, rate, image size) and H2O's action label names with their frame ranges, so it can be committed to
     the public repository; it is identical with or without --mano."""
     meta = json.loads((clip / "meta.json").read_text())
@@ -665,13 +665,13 @@ def write_clip_readme(clip):
                      for i, a in enumerate(meta["annotations"]))
     txt = f"""# H2O run `{n}`: hand skeletons, fingertips and wrists
 
-**The data is not included in this repository** (H2O's terms do not allow passing it on). Run `h2o/reproduce_h2o.py`
-with your own H2O login to download and build it here; see [`h2o/README.md`](../README.md). This README describes what
+**The data is not included in this repository** (H2O's terms do not allow passing it on). Run `data/h2o/reproduce_h2o.py`
+with your own H2O login to download and build it here; see [`data/h2o/README.md`](../README.md). This README describes what
 the script writes into this folder.
 
 One {meta['duration_s']:.1f}-second egocentric clip with per-frame 3D hand skeletons, for testing retargeting from human
 hands to robot hands. Same file layout, array keys and conventions as the EgoVerse runs in
-[`data/egoverse_trace`](../../data/egoverse_trace/README.md).
+[`data/egoverse/trace`](../../egoverse/trace/README.md).
 
 | | |
 |---|---|
@@ -776,7 +776,7 @@ From the repository root, after running the script:
 
 ```python
 import numpy as np
-d = np.load("h2o/{n}/data.npz")
+d = np.load("data/h2o/{n}/data.npz")
 tips = d["fingertips_world"]                                 # ({T}, 2, 5, 3) metres
 wrist = d["wrist_pos_world"][:, 1]                           # right wrist, ({T}, 3)
 speed = np.linalg.norm(d["wrist_vel_world"][:, 1], axis=-1)  # m/s
@@ -1143,7 +1143,7 @@ def write_manifest(out, manifest):
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--out", type=Path, default=HERE,
-                    help="output folder (default: this h2o/ folder, next to the committed run READMEs)")
+                    help="output folder (default: this data/h2o/ folder, next to the committed run READMEs)")
     ap.add_argument("--netrc", help="netrc file with 'machine h2odataset.ethz.ch login ... password ...' "
                                     "(or set H2O_USER / H2O_PASSWORD)")
     ap.add_argument("--mano", help="folder with MANO_LEFT.pkl and MANO_RIGHT.pkl (optional: mano_fit.npz and the 3D view)")

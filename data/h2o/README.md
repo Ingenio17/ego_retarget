@@ -2,7 +2,7 @@
 
 Five egocentric clips from the [H2O dataset](https://h2odataset.ethz.ch/) (two hands manipulating objects, ETH Zurich,
 ICCV 2021), turned into the same per-run format as the EgoVerse runs in
-[`data/egoverse_trace`](../data/egoverse_trace/README.md): original frames, per-frame 21-joint hand skeletons,
+[`data/egoverse/trace`](../egoverse/trace/README.md): original frames, per-frame 21-joint hand skeletons,
 fingertips, wrists and camera poses (`data.npz`), MANO hands (`mano_fit.npz`), metadata with H2O's action labels,
 videos with the skeletons drawn on, and a floating 3D view of the hands in the world frame.
 
@@ -16,7 +16,7 @@ videos with the skeletons drawn on, and a floating 3D view of the hands in the w
 | `<run>/README.md` | what each run contains: source sequence, task name, H2O's action segments, file and array descriptions |
 | `.gitignore` | keeps everything the script writes out of git |
 
-After the script has run, each `<run>/` folder also holds the data files, and `h2o/index.csv` lists the runs. Do not
+After the script has run, each `<run>/` folder also holds the data files, and `data/h2o/index.csv` lists the runs. Do not
 commit, push or send those files to anyone who has not accepted H2O's terms themselves.
 
 ## Runs
@@ -46,7 +46,7 @@ segment with its frames.
 - Linux x86_64 (tested on Ubuntu 24.04).
 - [uv](https://docs.astral.sh/uv/getting-started/installation/) (recommended; it installs Python 3.11.16 by itself), or
   CPython 3.11 with `venv` and `pip`.
-- Disk: about 25 GB free while the script runs (the extracted sequences are kept in `h2o/.cache/` until the build
+- Disk: about 25 GB free while the script runs (the extracted sequences are kept in `data/h2o/.cache/` until the build
   ends, then deleted); 3.7 GB at the end.
 - RAM: about 4 GB.
 - Optional, for `mano_fit.npz` and the 3D view: the MANO model (step 3) and a GPU with an EGL driver (pyrender renders
@@ -92,15 +92,15 @@ cd ego_retarget
 **With uv** (reads the pinned dependency list inside the script, creates the environment itself):
 
 ```bash
-uv run h2o/reproduce_h2o.py --netrc ~/.h2o_netrc --mano /path/to/mano_v1_2/models
+uv run data/h2o/reproduce_h2o.py --netrc ~/.h2o_netrc --mano /path/to/mano_v1_2/models
 ```
 
 **With pip:**
 
 ```bash
 python3.11 -m venv .venv
-.venv/bin/pip install --no-deps -r h2o/requirements.txt
-.venv/bin/python h2o/reproduce_h2o.py --netrc ~/.h2o_netrc --mano /path/to/mano_v1_2/models
+.venv/bin/pip install --no-deps -r data/h2o/requirements.txt
+.venv/bin/python data/h2o/reproduce_h2o.py --netrc ~/.h2o_netrc --mano /path/to/mano_v1_2/models
 ```
 
 `--no-deps` is needed because `requirements.txt` already lists every package including the indirect ones, and one of
@@ -116,7 +116,7 @@ Leave out `--mano` to skip `mano_fit.npz` and the 3D views.
 | `--netrc FILE` | – | netrc file with your H2O login (or set `H2O_USER` / `H2O_PASSWORD`) |
 | `--mano DIR` | – | MANO model folder (`MANO_LEFT.pkl`, `MANO_RIGHT.pkl`); optional |
 | `--clips S ...` | `h1/3 o1/7 o1/1 o2/5 k1/0` | subject-1 sequences as `<scene>/<seq>`; other sequences are named by the rule above and built the same way, but only the default five have checksums in `MANIFEST.sha256` |
-| `--out DIR` | `h2o/` | where the run folders are written |
+| `--out DIR` | `data/h2o/` | where the run folders are written |
 | `--cache DIR` | `<out>/.cache` | where the extracted sequences go; complete sequences already there are not downloaded again, so an interrupted run resumes |
 | `--keep-cache` | off | keep the extracted sequences after a successful run |
 | `--build-only` | off | no download: build from sequences already extracted in `--cache` (`<cache>/subject1/<scene>/<seq>/cam4/`) |
@@ -134,7 +134,7 @@ Leave out `--mano` to skip `mano_fit.npz` and the 3D views.
 2. **Build** (about 2 min with 5 parallel jobs): `data.npz`, `mano_fit.npz`, the frames, `video.mp4`, `overlay.mp4`,
    `meta.json` and each run's `README.md`.
 3. **3D views** (about 1-2 min on a GPU).
-4. **Check** every file against `MANIFEST.sha256`, then delete `h2o/.cache/`.
+4. **Check** every file against `MANIFEST.sha256`, then delete `data/h2o/.cache/`.
 
 A complete run took 12.6 min on 2026-10-08 (8.7 min of it downloading). It ends with one line per file and `ALL OK`,
 or `SOME FILES DIFFER` and a non-zero exit code:
@@ -148,11 +148,11 @@ or `SOME FILES DIFFER` and a non-zero exit code:
 ## Data format
 
 Every run has the same files, `.npz` keys and conventions as the EgoVerse runs in
-[`data/egoverse_trace`](../data/egoverse_trace/README.md), so code written for one reads the other:
+[`data/egoverse/trace`](../egoverse/trace/README.md), so code written for one reads the other:
 
 ```python
 import numpy as np
-d = np.load("h2o/pour_milk/data.npz")
+d = np.load("data/h2o/pour_milk/data.npz")
 tips = d["fingertips_world"]                                 # (T, 2, 5, 3) metres; axis 1: 0 = left, 1 = right
 wrist = d["wrist_pos_world"][:, 1]                           # right wrist, (T, 3)
 speed = np.linalg.norm(d["wrist_vel_world"][:, 1], axis=-1)  # m/s
@@ -175,7 +175,7 @@ Each run's README has the full key tables.
 - **`H2O server refused the login (HTTP 401)`:** the H2O password has expired (7 days); register again at
   [h2odataset.ethz.ch](https://h2odataset.ethz.ch/) and update the netrc file or variables.
 - **Slow download:** the H2O server's speed varies from day to day. Interrupt and rerun later: finished sequences in
-  `h2o/.cache/` are kept and not downloaded again. Fewer parallel requests (`--workers 20`) can help on a weak link.
+  `data/h2o/.cache/` are kept and not downloaded again. Fewer parallel requests (`--workers 20`) can help on a weak link.
 - **`skipped (built without --mano)`** for `mano_fit.npz` and `<run>_world3d_only.mp4`: pass `--mano` with the folder
   that contains `MANO_LEFT.pkl` and `MANO_RIGHT.pkl`.
 - **EGL / OpenGL errors in step 3:** the machine has no GPU with an EGL driver; run without `--mano`, or on a machine

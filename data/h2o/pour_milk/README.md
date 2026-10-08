@@ -1,38 +1,38 @@
-# H2O run `read_espresso`: hand skeletons, fingertips and wrists
+# H2O run `pour_milk`: hand skeletons, fingertips and wrists
 
-**The data is not included in this repository** (H2O's terms do not allow passing it on). Run `h2o/reproduce_h2o.py`
-with your own H2O login to download and build it here; see [`h2o/README.md`](../README.md). This README describes what
+**The data is not included in this repository** (H2O's terms do not allow passing it on). Run `data/h2o/reproduce_h2o.py`
+with your own H2O login to download and build it here; see [`data/h2o/README.md`](../README.md). This README describes what
 the script writes into this folder.
 
-One 25.6-second egocentric clip with per-frame 3D hand skeletons, for testing retargeting from human
+One 24.8-second egocentric clip with per-frame 3D hand skeletons, for testing retargeting from human
 hands to robot hands. Same file layout, array keys and conventions as the EgoVerse runs in
-[`data/egoverse_trace`](../../data/egoverse_trace/README.md).
+[`data/egoverse/trace`](../../egoverse/trace/README.md).
 
 | | |
 |---|---|
-| source | [H2O](https://h2odataset.ethz.ch/) (Kwon et al., ICCV 2021), subject 1, scene `o1`, sequence `7`, egocentric camera `cam4` |
-| object | `espresso` |
-| task name | `read_espresso` |
-| window | the whole sequence, frames 0-767 (768 frames) |
-| rate, length | 30 fps, 25.6 s |
+| source | [H2O](https://h2odataset.ethz.ch/) (Kwon et al., ICCV 2021), subject 1, scene `o1`, sequence `1`, egocentric camera `cam4` |
+| object | `milk` |
+| task name | `pour_milk` |
+| window | the whole sequence, frames 0-744 (745 frames) |
+| rate, length | 30 fps, 24.8 s |
 | image | 1280 x 720 |
 
 ## Task name and annotations
 
 H2O labels every frame of a sequence with one action from its 36-action vocabulary (verb + object, such as
-`grab espresso`) or background. We name the run after its main action: the longest action segment that is not a
-plain `place ...` or `grab ...`, here **`read espresso`**, written `read_espresso`.
+`grab milk`) or background. We name the run after its main action: the longest action segment that is not a
+plain `place ...` or `grab ...`, here **`pour milk`**, written `pour_milk`.
 
 All action segments of the sequence, in clip frames (start inclusive, end exclusive; frames not listed are background).
 `meta.json` holds the same list under `annotations`.
 
 | # | H2O action label | frames |
 |---|---|---|
-| 1 | place espresso | 0-44 |
-| 2 | grab espresso | 69-121 |
-| 3 | read espresso | 177-411 |
-| 4 | take out espresso | 466-596 |
-| 5 | put in espresso | 658-743 |
+| 1 | place milk | 0-57 |
+| 2 | grab milk | 86-149 |
+| 3 | open milk | 163-301 |
+| 4 | pour milk | 367-538 |
+| 5 | close milk | 582-744 |
 
 **Label caveat.** The hand and camera poses are H2O's shipped labels: MANO hands fitted to multi-view RGB-D recordings in a
 lab (one desk with calibration markers), not motion capture.
@@ -41,17 +41,17 @@ lab (one desk with calibration markers), not motion capture.
 
 | file | what it is |
 |---|---|
-| `frames/0000.png` ... `frames/0767.png` | the original H2O RGB frames (PNG), byte for byte; frame `i` is row `i` of every array |
+| `frames/0000.png` ... `frames/0744.png` | the original H2O RGB frames (PNG), byte for byte; frame `i` is row `i` of every array |
 | `video.mp4` | the same frames as H.264 (CRF 18, yuv420p), for viewing |
 | `overlay.mp4` | the video with both 21-joint skeletons drawn on it (left hand blue, right hand green), CRF 18 |
-| `read_espresso_world3d_only.mp4` | floating 3D view in the world frame: MANO hand meshes over the skeletons, the head camera as a pyramid, a fixed virtual camera, 1280 x 960, CRF 18 (needs `--mano`) |
+| `pour_milk_world3d_only.mp4` | floating 3D view in the world frame: MANO hand meshes over the skeletons, the head camera as a pyramid, a fixed virtual camera, 1280 x 960, CRF 18 (needs `--mano`) |
 | `data.npz` | per-frame skeleton, fingertip, wrist and camera arrays (below) |
 | `mano_fit.npz` | H2O's MANO hand annotation, moved into the world frame (below; needs `--mano`) |
 | `meta.json` | clip details, conventions, the world transform and H2O's action labels as annotations |
 
 ## `data.npz`
 
-T = 768. Axis 1 of every `(T, 2, ...)` array is the hand: 0 = left, 1 = right. float32 unless noted. Missing values
+T = 745. Axis 1 of every `(T, 2, ...)` array is the hand: 0 = left, 1 = right. float32 unless noted. Missing values
 are NaN, never zeros.
 
 | key | shape | units | frame | meaning |
@@ -115,9 +115,9 @@ From the repository root, after running the script:
 
 ```python
 import numpy as np
-d = np.load("h2o/read_espresso/data.npz")
-tips = d["fingertips_world"]                                 # (768, 2, 5, 3) metres
-wrist = d["wrist_pos_world"][:, 1]                           # right wrist, (768, 3)
+d = np.load("data/h2o/pour_milk/data.npz")
+tips = d["fingertips_world"]                                 # (745, 2, 5, 3) metres
+wrist = d["wrist_pos_world"][:, 1]                           # right wrist, (745, 3)
 speed = np.linalg.norm(d["wrist_vel_world"][:, 1], axis=-1)  # m/s
 ```
 
@@ -130,7 +130,7 @@ openly licensed and are not part of the ego_retarget repository. Key terms, quot
 - the dataset "shall only be downloaded if you agree to these terms";
 - it "is to be used only for the academic purposes" and "will not be used for commercial purposes";
 - it "will not be transferred to any third party": do not commit, push or send the generated files to anyone who has
-  not accepted H2O's terms themselves (`h2o/.gitignore` keeps them out of git);
+  not accepted H2O's terms themselves (`data/h2o/.gitignore` keeps them out of git);
 - "any publication based on, or containing, the DATASET shall include a reference to the Data set";
 - you "shall further not carry out any procedures with the DATASET (linking, comparison, processing) with which any
   identity of a person could be derived";

@@ -118,7 +118,7 @@ Install the pinned packages from the repo root with `pip install -r requirements
 
 ```python
 import numpy as np
-d = np.load("data/egoverse_trace/stitching/data.npz")
+d = np.load("data/egoverse/trace/stitching/data.npz")
 tips = d["fingertips_world"]                                 # (600, 2, 5, 3) metres
 wrist = d["wrist_pos_world"][:, 1]                           # right wrist, (600, 3)
 speed = np.linalg.norm(d["wrist_vel_world"][:, 1], axis=-1)  # m/s

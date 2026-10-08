@@ -11,19 +11,19 @@ Planned contents:
 
 ## Data
 
-- [`data/egoverse_trace/`](data/egoverse_trace/README.md): EgoVerse clips from the `trace` lab, one folder per run, named
-  by task label: [`appliance_repair`](data/egoverse_trace/appliance_repair/README.md),
-  [`stitching`](data/egoverse_trace/stitching/README.md) and [`sewing`](data/egoverse_trace/sewing/README.md). Each is a
+- [`data/egoverse/trace/`](data/egoverse/trace/README.md): EgoVerse clips from the `trace` lab, one folder per run, named
+  by task label: [`appliance_repair`](data/egoverse/trace/appliance_repair/README.md),
+  [`stitching`](data/egoverse/trace/stitching/README.md) and [`sewing`](data/egoverse/trace/sewing/README.md). Each is a
   continuous 20 s take with original frames, per-frame 21-joint skeletons, fingertips, wrists, camera poses and a MANO
   fit in `.npz`, plus the step annotations in its README.
 
 ## H2O
 
-[`h2o/`](h2o/README.md): five clips from the [H2O dataset](https://h2odataset.ethz.ch/) in the same format, one folder
+[`data/h2o/`](data/h2o/README.md): five clips from the [H2O dataset](https://h2odataset.ethz.ch/) in the same format, one folder
 per run named by its main H2O action (`apply_lotion`, `read_espresso`, `pour_milk`, `apply_spray`,
 `take_out_cappuccino`). **The H2O data is not included**: H2O's terms forbid passing it on. Register for H2O yourself,
-then `uv run h2o/reproduce_h2o.py --netrc <file> --mano <dir>` downloads and builds the runs into `h2o/` and checks them
-against `h2o/MANIFEST.sha256`. [`h2o/README.md`](h2o/README.md) has the full setup; each run's README lists its task
+then `uv run data/h2o/reproduce_h2o.py --netrc <file> --mano <dir>` downloads and builds the runs into `data/h2o/` and checks them
+against `data/h2o/MANIFEST.sha256`. [`data/h2o/README.md`](data/h2o/README.md) has the full setup; each run's README lists its task
 label and H2O action segments.
 
 ## Setup
@@ -51,5 +51,5 @@ git submodule update --remote urgantry_sim
 
 Data under [`data/`](data/) is licensed under
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/); each data folder has its own `LICENSE` and an
-attribution section in its README. Data built by `h2o/reproduce_h2o.py` stays under H2O's terms of use and must not be
-committed or shared (`h2o/.gitignore` keeps it out of git). The `urgantry_sim` submodule is a separate repository with its own licence.
+attribution section in its README. Data built by `data/h2o/reproduce_h2o.py` stays under H2O's terms of use and must not be
+committed or shared (`data/h2o/.gitignore` keeps it out of git). The `urgantry_sim` submodule is a separate repository with its own licence.

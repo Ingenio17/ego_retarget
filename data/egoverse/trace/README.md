@@ -44,7 +44,7 @@ Install the pinned packages from the repo root with `pip install -r requirements
 ```python
 import numpy as np
 for run in ["appliance_repair", "stitching", "sewing"]:
-    d = np.load(f"data/egoverse_trace/{run}/data.npz")
+    d = np.load(f"data/egoverse/trace/{run}/data.npz")
     tips = d["fingertips_world"]                                 # (600, 2, 5, 3) metres
     speed = np.linalg.norm(d["wrist_vel_world"][:, 1], axis=-1)  # right wrist speed, m/s
     print(run, tips.shape, float(np.nanmedian(speed)))
