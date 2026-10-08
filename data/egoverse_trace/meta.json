@@ -1,0 +1,79 @@
+{
+ "clip": "trace_024151338984",
+ "lab": "trace",
+ "rig": "own head camera (not Aria)",
+ "task": "appliance_repair",
+ "task_description": "remove fan assembly from motherboard",
+ "episode_hash": "2026-07-02-02-41-51-338984",
+ "source_path": "s3://rldb/processed_v3/trace/2026-07-02-02-41-51-338984.zarr",
+ "source_window": "datasets/egoverse/windows/trace_024151338984",
+ "source_frames": "datasets/egoverse/windows/trace_024151338984/frames",
+ "window": [
+  1486,
+  2086
+ ],
+ "episode_frames": 3573,
+ "fps": 30.0,
+ "frames": 600,
+ "duration_s": 20.0,
+ "image_size": [
+  1280,
+  720
+ ],
+ "units": {
+  "position": "m",
+  "velocity": "m/s",
+  "pixels": "px",
+  "time": "s"
+ },
+ "conventions": {
+  "hands": "axis 1 of every (T, 2, ...) array: 0 = left, 1 = right",
+  "joints": "21: 0 wrist; thumb 1-4, index 5-8, middle 9-12, ring 13-16, pinky 17-20, base to tip",
+  "fingertips": "joints 4, 8, 12, 16, 20 (thumb, index, middle, ring, pinky)",
+  "world": "the episode's own world frame as shipped by EgoVerse; +z appears to point up in these clips (head 0.41-0.55 m above the wrists along +z), undocumented by EgoVerse",
+  "camera": "OpenCV: x right, y down, z forward; cam = R^T (world - t) with head_pose_world = [R t; 0 1]",
+  "head_pose_world": "camera-to-world 4x4",
+  "quaternion": "wrist_quat_world is [qw, qx, qy, qz], wrist-to-world rotation from the shipped wrist pose",
+  "in_view": "hand labelled, wrist more than 5 cm in front of the camera and its pixel inside the image",
+  "skeleton_px": "NaN where the joint is at or behind the camera (z <= 5 cm)",
+  "missing": "NaN, never zeros"
+ },
+ "label_source": "EgoVerse's shipped labels: estimates from the lab's own hand tracker, not motion capture",
+ "annotations": [
+  {
+   "text": "place green screwdriver on desk with right hand AND hold mini PC with left hand AND tap mini PC with orange screwdriver with right hand",
+   "start_idx": 1472,
+   "end_idx": 1598
+  },
+  {
+   "text": "place orange screwdriver on desk with right hand AND hold computer case with left hand AND unscrew screw from computer case with green screwdriver with right hand",
+   "start_idx": 1598,
+   "end_idx": 1790
+  },
+  {
+   "text": "hold mini PC case with left hand AND place green screwdriver on desk with right hand",
+   "start_idx": 1790,
+   "end_idx": 1835
+  },
+  {
+   "text": "hold mini PC case with left hand AND tap on mini PC orange screwdriver with right hand AND place orange screwdriver on desk with right",
+   "start_idx": 1835,
+   "end_idx": 1880
+  },
+  {
+   "text": "open mini PC case cover with both hands",
+   "start_idx": 1880,
+   "end_idx": 1940
+  },
+  {
+   "text": "remove mini PC case cover with right hand AND place case cover on stacked computer cases with right hand",
+   "start_idx": 1940,
+   "end_idx": 2030
+  },
+  {
+   "text": "remove hard drive from mini PC chassis with both hands AND place hard drive in FOR DISPOSAL box with right hand",
+   "start_idx": 2030,
+   "end_idx": 2150
+  }
+ ]
+}

@@ -8,6 +8,11 @@ Planned contents:
 - Tools to visualise a skeleton as a floating 3D hand next to its video.
 - Retargeting from the human skeleton to the robot hands in `urgantry_sim`.
 
+## Data
+
+- [`data/egoverse_trace/`](data/egoverse_trace/README.md): one 20 s EgoVerse clip (appliance repair) with original
+  frames, per-frame 21-joint skeletons, fingertips, wrists, camera poses and a MANO fit, in `.npz`.
+
 ## Submodules
 
 `urgantry_sim` (https://github.com/leo01110111/urgantry_sim) is the simulator (bimanual UR7e arms with Wuji hands).
