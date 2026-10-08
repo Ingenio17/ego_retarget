@@ -29,3 +29,9 @@ Update the simulator to the latest `main`:
 ```bash
 git submodule update --remote urgantry_sim
 ```
+
+## Licence
+
+Data under [`data/`](data/) is licensed under
+[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/); each data folder has its own `LICENSE` and an
+attribution section in its README. The `urgantry_sim` submodule is a separate repository with its own licence.

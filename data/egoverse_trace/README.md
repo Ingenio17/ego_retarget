@@ -89,3 +89,22 @@ tips = d["fingertips_world"]                                 # (600, 2, 5, 3) me
 wrist = d["wrist_pos_world"][:, 1]                           # right wrist, (600, 3)
 speed = np.linalg.norm(d["wrist_vel_world"][:, 1], axis=-1)  # m/s
 ```
+
+## Licence and attribution
+
+The data in this folder is licensed under the
+[Creative Commons Attribution-ShareAlike 4.0 International licence (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/);
+the full text is in [`LICENSE`](LICENSE).
+
+**Source.** EgoVerse ([egoverse.ai](https://egoverse.ai/), [paper](https://arxiv.org/abs/2604.07607),
+[code](https://github.com/GaTech-RL2/EgoVerse)), recorded by the `trace` lab, episode `2026-07-02-02-41-51-338984`,
+released by EgoVerse under CC BY-SA 4.0.
+
+**Changes made from the source.** We cut a 600-frame window (episode frames 1486-2085); copied its JPEG frames unchanged;
+encoded `video.mp4` from them; drew the shipped hand labels onto the frames (`overlay.mp4`); converted the shipped hand,
+wrist and head poses into the arrays of `data.npz` (camera-frame copies, pixel projections, fingertip subsets,
+velocities); fitted MANO to the skeletons (`mano_fit.npz`); and rendered the world-frame 3D view
+(`trace_world3d_only.mp4`). All of these derived files are shared under the same CC BY-SA 4.0 licence.
+
+The MANO model itself is not part of this folder and has its own licence
+([mano.is.tue.mpg.de](https://mano.is.tue.mpg.de)); `mano_fit.npz` holds only fitted parameters.
