@@ -1,0 +1,6 @@
+# Packages for loading and viewing the data in data/ (Python 3.10-3.12).
+#   python -m venv .venv && .venv/bin/pip install -r requirements.txt
+numpy==2.2.6          # data.npz, mano_fit.npz
+pillow==11.3.0        # frames/*.jpg
+imageio==2.37.0       # video.mp4, overlay.mp4, trace_world3d_only.mp4
+imageio-ffmpeg==0.6.0 # ffmpeg binary used by imageio for the mp4 files

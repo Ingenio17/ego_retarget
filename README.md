@@ -13,6 +13,10 @@ Planned contents:
 - [`data/egoverse_trace/`](data/egoverse_trace/README.md): one 20 s EgoVerse clip (appliance repair) with original
   frames, per-frame 21-joint skeletons, fingertips, wrists, camera poses and a MANO fit, in `.npz`.
 
+## Setup
+
+To load and view the data: `python -m venv .venv && .venv/bin/pip install -r requirements.txt`.
+
 ## Submodules
 
 `urgantry_sim` (https://github.com/leo01110111/urgantry_sim) is the simulator (bimanual UR7e arms with Wuji hands).

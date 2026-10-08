@@ -82,6 +82,8 @@ Mean fit error: left 1.6 mm, right 1.6 mm. The MANO model files are not included
 
 ## Loading
 
+Install the pinned packages from the repo root with `pip install -r requirements.txt`, then:
+
 ```python
 import numpy as np
 d = np.load("data/egoverse_trace/data.npz")
@@ -98,7 +100,9 @@ the full text is in [`LICENSE`](LICENSE).
 
 **Source.** EgoVerse ([egoverse.ai](https://egoverse.ai/), [paper](https://arxiv.org/abs/2604.07607),
 [code](https://github.com/GaTech-RL2/EgoVerse)), recorded by the `trace` lab, episode `2026-07-02-02-41-51-338984`,
-released by EgoVerse under CC BY-SA 4.0.
+released by EgoVerse under CC BY-SA 4.0 as listed on the episode's page in the EgoVerse browser:
+[partners.mecka.ai/egoverse](https://partners.mecka.ai/egoverse?lab=trace&search=2026-07-02-02-41-51-338984#explorer)
+(checked 2026-10-08).
 
 **Changes made from the source.** We cut a 600-frame window (episode frames 1486-2085); copied its JPEG frames unchanged;
 encoded `video.mp4` from them; drew the shipped hand labels onto the frames (`overlay.mp4`); converted the shipped hand,
